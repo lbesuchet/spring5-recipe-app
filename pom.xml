@@ -21,7 +21,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 	</properties>
 
 	<dependencies>
@@ -51,6 +51,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+      <version>1.18.24</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -73,9 +74,7 @@
           <includes>
             <include>**/*IT.java</include>
           </includes>
-          <additionalClasspathElements>
-            <additionalClasspathElement>${basedir}/target/classes</additionalClasspathElement>
-          </additionalClasspathElements>
+          <classesDirectory>${basedir}/target/classes</classesDirectory>
         </configuration>
         <executions>
           <execution>
