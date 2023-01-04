@@ -1,6 +1,7 @@
 package guru.springframework;
 
 import guru.springframework.domain.Category;
+import guru.springframework.domain.Difficulty;
 import guru.springframework.domain.Ingredient;
 import guru.springframework.domain.Notes;
 import guru.springframework.domain.Recipe;
@@ -89,6 +90,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     guacRecipe.setPrepTime(10);
     guacRecipe.setCookTime(0);
     guacRecipe.setServings(4);
+    guacRecipe.setDifficulty(Difficulty.EASY);
     guacRecipe.setSource("Simply Recipes");
     guacRecipe.setUrl("https://www.simplyrecipes.com/recipes/perfect_guacamole/");
     guacRecipe.setDirections(
