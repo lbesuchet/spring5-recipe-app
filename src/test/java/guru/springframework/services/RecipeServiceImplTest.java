@@ -24,7 +24,7 @@ public class RecipeServiceImplTest extends TestCase {
   public void setUp() throws Exception {
     super.setUp();
     MockitoAnnotations.initMocks(this);
-    recipeService = new RecipeServiceImpl(recipeRepository);
+    recipeService = new RecipeServiceImpl(recipeRepository, null, null);
   }
   public void testGetRecipes() {
     Recipe recipe = new Recipe();
