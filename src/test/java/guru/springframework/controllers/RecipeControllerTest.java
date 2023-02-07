@@ -36,19 +36,19 @@ public class RecipeControllerTest {
   Model model;
 
   RecipeController controller;
+  MockMvc mockMvc;
 
   @Before
   public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
     controller = new RecipeController(recipeService);
+    mockMvc = MockMvcBuilders.standaloneSetup(controller).setControllerAdvice(new ControllerExceptionHandler()).build();
   }
 
   @Test
   public void testGetRecipe() throws Exception {
     Recipe recipe = new Recipe();
     recipe.setId(1L);
-
-    MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
     when(recipeService.findById(eq(1L))).thenReturn(recipe);
     mockMvc.perform(get("/recipe/1/show"))
@@ -63,8 +63,6 @@ public class RecipeControllerTest {
     command.setId(2L);
 
     when(recipeService.saveRecipeCommand(any())).thenReturn(command);
-
-    MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
     mockMvc.perform(post("/recipe")
         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -82,8 +80,6 @@ public class RecipeControllerTest {
 
     when(recipeService.findCommandById(anyLong())).thenReturn(command);
 
-    MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-
     mockMvc.perform(get("/recipe/1/update"))
         .andExpect(status().isOk())
         .andExpect(view().name("recipe/recipeform"))
@@ -92,8 +88,6 @@ public class RecipeControllerTest {
 
   @Test
   public void testDeleteAction() throws Exception {
-    MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-
     mockMvc.perform(get("/recipe/1/delete"))
         .andExpect(status().is3xxRedirection())
         .andExpect(view().name("redirect:/"));
@@ -105,8 +99,6 @@ public class RecipeControllerTest {
     Recipe recipe = new Recipe();
     recipe.setId(1L);
 
-    MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-
     when(recipeService.findById(anyLong())).thenThrow(NotFoundException.class);
     mockMvc.perform(get("/recipe/1/show"))
         .andExpect(status().isNotFound())
@@ -115,7 +107,6 @@ public class RecipeControllerTest {
 
   @Test
   public void testNumberFormatException() throws Exception {
-    MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
     mockMvc.perform(get("/recipe/af/show"))
         .andExpect(status().isBadRequest())
