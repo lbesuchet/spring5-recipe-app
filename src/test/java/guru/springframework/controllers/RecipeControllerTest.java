@@ -6,7 +6,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -15,11 +14,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.domain.Recipe;
+import guru.springframework.exception.NotFoundException;
+import guru.springframework.services.RecipeService;
 import guru.springframework.services.RecipeServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -28,7 +30,8 @@ import org.springframework.ui.Model;
 public class RecipeControllerTest {
 
   @Mock
-  RecipeServiceImpl recipeService;
+  RecipeService recipeService;
+
   @Mock
   Model model;
 
@@ -95,5 +98,18 @@ public class RecipeControllerTest {
         .andExpect(status().is3xxRedirection())
         .andExpect(view().name("redirect:/"));
     verify(recipeService, times(1)).deleteById(anyLong());
+  }
+
+  @Test
+  public void testGetRecipeNotFound() throws Exception {
+    Recipe recipe = new Recipe();
+    recipe.setId(1L);
+
+    MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+
+    when(recipeService.findById(anyLong())).thenThrow(NotFoundException.class);
+    mockMvc.perform(get("/recipe/1/show"))
+        .andExpect(status().isNotFound())
+        .andExpect(view().name("404Error"));
   }
 }
