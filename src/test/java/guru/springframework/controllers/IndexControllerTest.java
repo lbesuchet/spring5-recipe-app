@@ -37,7 +37,7 @@ public class IndexControllerTest {
   public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
     indexController = new IndexController(recipeService);
-    MockMvc mockMvc = MockMvcBuilders.standaloneSetup(indexController).build();
+    mockMvc = MockMvcBuilders.standaloneSetup(indexController).build();
 
   }
 
